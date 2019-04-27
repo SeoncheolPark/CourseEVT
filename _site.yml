@@ -1,0 +1,15 @@
+name: "Seoncheol Park"
+output_dir: "."
+navbar:
+  title: "Mini Course: Extreme Value Analysis"
+  left:
+    - text: "Introduction"
+      href: Lec00_Introduction.html
+  right:
+    - icon: fa-github fa-lg
+      href: http://github.com/SeoncheolPark
+output:
+  html_document:
+    theme: simplex
+    highlight: textmate
+    css: 'styles.css'

@@ -1,0 +1,68 @@
+---
+title: "Introduction"
+author: "박선철 (SNU)"
+date: "November 8, 2015"
+header-includes:
+  - \usepackage{bm}
+  - \usepackage{kotex}
+output: html_document
+---
+
+## About the course
+
+- Plan:
+
+- Useful references
+
+1. Coles (2001), *An introduction to Statistical Modeling of Extrem Values*, Springer
+
+2. Beirlant, Goegebeur, Segers and Teugels (2004), *Statistics of Extremes: Theory and Applications*, Wiley
+
+3. de Haan and Ferreira (2006), *Extreme Value Theory: An Introduction*, Springer
+
+4. Dey and Yan (2016), *Extreme Value Modeling and Risk Analysis*, CRC Press
+
+- `R` packages: `evd`, `ismev`, `POT`, `RandomFields`, `SpatialExtremes`, etc
+
+## Intro
+
+## Examples: Daily rainfal accumulations
+
+```{r, echo=F, fig.cap='A time series of daily rainfall accumulations at a location in south-west England recorded over 1914-1962.', message=F, warning=F, cache=F, out.width = "275px", dev.args=list(pointsize=20)}
+library(ismev)
+
+par(mfrow=c(1,1))
+data("rain")
+plot(seq(ISOdate(1914,1,1), ISOdate(1961,12,30), "days"), rain, xlab="Year", ylab="Daily Rainfall")
+
+```
+
+
+## Examples: Wooster data
+
+```{r, echo=F, fig.cap='Negated Wooster 5-year daily minimum temperatures.', message=F, warning=F, cache=F, out.width = "275px", dev.args=list(pointsize=20)}
+
+par(mfrow=c(1,1))
+data("wooster")
+plot(seq(ISOdate(1983,1,1), ISOdate(1987,12,31), "days"), -wooster, xlab="Year", ylab="Daily Minimum Temp.")
+
+```
+
+
+## Challenges
+
+- Modeling of the **sizes** of extreme events at some specific location (pointwise return levels) — Block maximum/Threshold approaches
+
+- Modeling of **clusters** of extremes (due to **temporal dependence**)
+
+- **Joint** modeling of extremes at several locations (**spatial dependence**)
+
+- Modeling of **non-stationarity**
+
+- Models for **asymptotic independence**
+
+- **Measure of dependence** at extreme levels
+
+- **Efficient inference**
+
+- **Simulation** of extreme events in space and time
