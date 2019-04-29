@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="박선철 (SNU)" />
+
+<meta name="date" content="2015-11-08" />
+
+<title>Univariate Extreme-Value Theory</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/simplex.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 41px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h2 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h3 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h4 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h5 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h6 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Mini Course: Extreme Value Analysis</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="Lec00_Introduction.html">Introduction</a>
+</li>
+<li>
+  <a href="Lec01_UEVT.html">Univariate EVT</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="http://github.com/SeoncheolPark">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Univariate Extreme-Value Theory</h1>
+<h4 class="author"><em>박선철 (SNU)</em></h4>
+<h4 class="date"><em>November 8, 2015</em></h4>
+
+</div>
+
+
+<div id="contents" class="section level2">
+<h2>Contents</h2>
+<ul>
+<li><p>Asymptotic distribution for maxima</p></li>
+<li><p>The max-stable paradigm</p></li>
+<li><p>Max-domains of attraction</p></li>
+<li><p>Return levels and return periods</p></li>
+<li><p>Point process characterization</p></li>
+<li><p>Asymptotic distribution for threshold exceedances</p></li>
+<li><p>Likelihood-based inference</p></li>
+</ul>
+</div>
+<div id="central-limit-theorem-clt" class="section level2">
+<h2>Central Limit Theorem (CLT)</h2>
+<ul>
+<li><p>Let <span class="math inline">\(Y_{1}, Y_{2}, \ldots, \stackrel{\text{iid}}{\sim}\mathcal{N}(\mu, \sigma^{2})\)</span> and consider the <strong>partial sum</strong> <span class="math inline">\(S_{n}\)</span> <span class="math display">\[S_{n} = \sum_{i=1}^{n}Y_{i}.\]</span></p></li>
+<li><p>It can be verified that</p></li>
+</ul>
+<ol style="list-style-type: decimal">
+<li><p><span class="math inline">\(E(S_{n}) =n\mu \rightarrow \pm \infty\)</span>, as <span class="math inline">\(n\rightarrow \infty\)</span>, if <span class="math inline">\(\mu \neq 0\)</span>.</p></li>
+<li><p><span class="math inline">\(E(S_{n}-n\mu) = 0\)</span>, but <span class="math inline">\(\text{var}(S_{n}-n\mu)=n\sigma^{2}\rightarrow\infty\)</span>, as <span class="math inline">\(n\rightarrow \infty\)</span>.</p></li>
+<li><p><span class="math inline">\(\frac{S_{n}-n\mu}{\sqrt{n}\sigma}\stackrel{D}{=}\mathcal{N}(0,1)\)</span>.</p></li>
+</ol>
+<ul>
+<li><strong>CLT</strong>: For any <span class="math inline">\(Y, Y_{1}, Y_{2}, \ldots, \stackrel{\text{iid}}{\sim} F\)</span> such that <span class="math inline">\(\text{var}(Y)&lt;\infty\)</span>, one can find sequences <span class="math inline">\(a_{n}&gt;0\)</span> and <span class="math inline">\(b_{n}\)</span> such that, as <span class="math inline">\(n\rightarrow\infty\)</span>, <span class="math display">\[\frac{S_{n}-b_{n}}{a_{n}}\stackrel{D}{\rightarrow}\mathcal{N}(0,1).\]</span> Theser sequences are <span class="math inline">\(a_{n}=\sqrt{n\text{var}(Y)}\)</span> and <span class="math inline">\(b_{n}=nE(Y)\)</span>.</li>
+</ul>
+</div>
+<div id="extremal-types-theorem-fisher-and-tippett-1928" class="section level2">
+<h2>Extremal Types Theorem (Fisher and Tippett, 1928)</h2>
+<ul>
+<li>Let <span class="math inline">\(Y_{1}, Y_{2},\ldots, \stackrel{\text{iid}}{\sim} F\)</span> with right endpoint <span class="math inline">\(y_{F} =\sup \{y: F(y)&lt;1\}\)</span>, and consider the <strong>partial maximum</strong> <span class="math inline">\(M_{n}\)</span> <span class="math display">\[M_{n} = \max (Y_{1},\ldots, Y_{n}).\]</span></li>
+</ul>
+<p><strong>Q</strong>. Can we find sequences <span class="math inline">\(a_{n}&gt;0\)</span> and <span class="math inline">\(b_{n}\)</span> such that the renormalized maximum <span class="math inline">\(\frac{M_{n}-b_{n}}{a_{n}}\)</span> has a <strong>non-degenerate</strong> limiting distribution? If so, what is the limit?</p>
+<ol style="list-style-type: decimal">
+<li><p>Exponential case: <span class="math inline">\(F(y) = 1 - \exp(-y/\lambda), y&gt;0, \lambda &gt;0\)</span>.</p></li>
+<li><p>Fr'{e}chet case: <span class="math inline">\(F(y) = \exp(-y^{-\alpha}), y&gt;0, \alpha &gt; 0\)</span>.</p></li>
+<li><p>Uniform case: <span class="math inline">\(F(y) = y, 0&lt;y&lt;1\)</span>.</p></li>
+</ol>
+<ul>
+<li>Similarly to the CLT, the <strong>Extremal Types Theorem (ETT)</strong> gives a partial answer to the above questions.</li>
+</ul>
+<hr />
+<p>Let <span class="math inline">\(Y_{1}, Y_{2},\ldots, \stackrel{\text{iid}}{\sim} F\)</span> with right endpoint <span class="math inline">\(y_{F} =\sup \{y: F(y)&lt;1\}\)</span>, and consider the <strong>partial maximum</strong> <span class="math display">\[M_{n}= \max (Y_{1}, \ldots, Y_{n}).\]</span></p>
+<p>If there exist sequences of constants <span class="math inline">\(a_{n}&gt;0\)</span> and <span class="math inline">\(b_{n}\)</span> such that as <span class="math inline">\(n\rightarrow\infty\)</span>, <span class="math display">\[\frac{M_{n}-b_{n}}{a_{n}}\stackrel{D}{\rightarrow} Z \sim G,\]</span> where <span class="math inline">\(G\)</span> is non-degenerate, then G must be a generalized extreme value (GEV) distribution, i.e., <span class="math display">\[
+G(y) =
+\begin{cases}
+\exp\Big\{ - (1+ \xi \frac{y-\mu}{\sigma})_{+}^{-1/\xi}  \Big\}, &amp; \xi \neq 0,\\
+\exp\Big\{ - \exp (-\frac{y-\mu}{\sigma}) \Big\}, &amp; \xi =0,
+\end{cases}
+\]</span> where <span class="math inline">\(a_{+} = \max(0,a)\)</span> and <span class="math inline">\(\mu \in \mathbb{R}\)</span>, <span class="math inline">\(\sigma &gt; 0\)</span> and <span class="math inline">\(\xi \in \mathbb{R}\)</span> are location, scale and shape parameters, respectively.</p>
+</div>
+<div id="r-plots" class="section level2">
+<h2>R plots</h2>
+<div class="figure" style="text-align: center">
+<img src="Lec01_UEVT_files/figure-html/unnamed-chunk-1-1.png" alt="Distribution of $M_{n}$ (left), that is $F^{n}(y)$, and distribution of $M^{*}(n)$ (right), that is $F^{n}(a_{n}y+b_{n})$, for suitable normalizing constants $a_{n}&gt;0$ and $b_{n}$." width="80%" />
+<p class="caption">
+Distribution of <span class="math inline">\(M_{n}\)</span> (left), that is <span class="math inline">\(F^{n}(y)\)</span>, and distribution of <span class="math inline">\(M^{*}(n)\)</span> (right), that is <span class="math inline">\(F^{n}(a_{n}y+b_{n})\)</span>, for suitable normalizing constants <span class="math inline">\(a_{n}&gt;0\)</span> and <span class="math inline">\(b_{n}\)</span>.
+</p>
+</div>
+</div>
+<div id="idea-of-the-proof-and-max-stability" class="section level2">
+<h2>Idea of the proof and max-stability</h2>
+<ul>
+<li>The proof consists of two steps:</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li><p>Show that the limiting distribution <span class="math inline">\(G\)</span> is max-stable, i.e., for any <span class="math inline">\(k\)</span>, one can find constants <span class="math inline">\(\alpha_{k}&gt;0\)</span> and <span class="math inline">\(\beta_{k}\)</span> such that <span class="math display">\[G^{k}(\alpha_{k}y + \beta_{k}) = G(y).\]</span> This follows from the fact that the maximum over <span class="math inline">\(ML\)</span> variable is equal to the maximum over <span class="math inline">\(M\)</span> block maxima, with blocks of length <span class="math inline">\(L\)</span>.</p></li>
+<li><p>Show that the GEV distribution is the <em>only</em> max-stable distribution.</p></li>
+</ol>
+<ul>
+<li><strong>Max-stability paradigm</strong>: use a max-stable distribution (the <em>limit</em>) to model block maxima for finite <span class="math inline">\(n\)</span>, and to extrapolate beyond the temporal scale of the data.</li>
+</ul>
+</div>
+<div id="comments-about-the-ett" class="section level2">
+<h2>Comments about the ETT</h2>
+<ul>
+<li><p>The theorem is valid for a wide range of distributions, even though the limiting <span class="math inline">\(\text{GEV}(\mu,\sigma,\xi)\)</span> distribution has only 3 parameters.</p></li>
+<li><p>This result can be extended to stationary processes with <strong>short-range dependence</strong> (Leadbetter, 1983) under the so-called <span class="math inline">\(D(u_{n})\)</span> condition:</p></li>
+</ul>
+<div id="leadbetters-condition" class="section level3">
+<h3>Leadbetter’s condition</h3>
+<p>Let <span class="math inline">\(A,B\subset\{ 1, \ldots, n\}\)</span> denote subsets of indicies separated by at least <span class="math inline">\(l\)</span>, i.e, <span class="math inline">\(\min B - \max A \geq l\)</span>. The <span class="math inline">\(D(u_{n})\)</span> condition is satisfied if <span class="math display">\[\sup_{A,B}|P(\mathbf{Y}_{A}\leq u_{n}, \mathbf{Y}_{B}\leq u_{n}) - P(\mathbf{Y}_{A}\leq u_{n})P(\mathbf{Y}_{B}\leq u_{n})|\leq \alpha(n,l),\]</span> where <span class="math inline">\(\alpha(n,l_{n})\rightarrow 0\)</span> for some sequence <span class="math inline">\(l_{n} = o(n), l_{n} \rightarrow \infty\)</span>, as <span class="math inline">\(n\rightarrow \infty\)</span>.</p>
+<ul>
+<li>This suggests that block maxima of a large class of processes may be modeled using the GEV distribution.</li>
+</ul>
+</div>
+</div>
+<div id="the-gev-distribution" class="section level2">
+<h2>The GEV distribution</h2>
+<ul>
+<li><p>GEV<span class="math inline">\((\mu, \sigma, \xi)\)</span> distribution: <span class="math display">\[
+G(y)=
+\begin{cases}
+\exp\Big\{- (1+ \xi \frac{y-\mu}{\sigma})_{+}^{-1/\xi} \Big\}, &amp; \xi \neq 0,\\
+\exp\Big\{- \exp(-\frac{y-\mu}{\sigma}) \Big\}, &amp; \xi = 0,\\
+\end{cases}
+\]</span> with <span class="math inline">\(\mu \in \mathbb{R}, \sigma &gt; 0 , \xi \in \mathbb{R}\)</span>, defined on <span class="math inline">\(\{ y : 1+\xi (y-\mu)/\sigma &gt;0 \}\)</span>.</p></li>
+<li><p>The crucial parameter is <span class="math inline">\(\xi\)</span>, which determines the heaviness of the tail:</p></li>
+</ul>
+<ol style="list-style-type: decimal">
+<li><p><span class="math inline">\(\xi &lt; 0\)</span> (Short-tailed): <strong>Reversed Weibull</strong> case, bounded tail;</p></li>
+<li><p><span class="math inline">\(\xi = 0\)</span> (Light-tailed): <strong>Gumbel</strong> case, exponentially decaying tail;</p></li>
+<li><p><span class="math inline">\(\xi &gt; 0\)</span> (heavy-tailed): <strong>Frechet</strong> case, tail with power law decay.</p></li>
+</ol>
+<ul>
+<li>Moments of <span class="math inline">\(Y\sim \text{GEV}(\mu, \sigma, \xi)\)</span>: <span class="math display">\[E(Y^{r}) &lt; \infty \Longleftrightarrow \xi r &lt; 1.\]</span></li>
+</ul>
+</div>
+<div id="gev-distribution-plot" class="section level2">
+<h2>GEV distribution: plot</h2>
+<div class="figure" style="text-align: center">
+<img src="Lec01_UEVT_files/figure-html/unnamed-chunk-2-1.png" alt="Standard Gumbel (black), unit Frechet (red) and unit Weibull (blue) density functions." width="80%" />
+<p class="caption">
+Standard Gumbel (black), unit Frechet (red) and unit Weibull (blue) density functions.
+</p>
+</div>
+</div>
+<div id="max-domains-of-attraction-mda" class="section level2">
+<h2>Max-domains of attraction (MDA)</h2>
+<ul>
+<li>A distribution <span class="math inline">\(F\)</span> is said to be in the <strong>max-domain of attraction</strong> of <span class="math inline">\(G\)</span> denoted by <span class="math inline">\(F\in\text{MDA}(G)\)</span>, if there exist sequences <span class="math inline">\(a_{n}&gt; 0\)</span> and <span class="math inline">\(b_{n}\)</span> such that for any <span class="math inline">\(y\)</span>, <span class="math inline">\(F^{n}(a_{n}y+b_{n})\rightarrow G(y)\)</span>, as <span class="math inline">\(n\rightarrow\infty\)</span>.</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li><p>MDA of the <strong>reversed Weibull</strong> distribution: Beta, Uniform</p></li>
+<li><p>MDA of the <strong>Gumbel</strong> distribution: Normal, Gamma, Log-normal, Weibull, Exponential</p></li>
+<li><p>MDA of the <strong>Frechet</strong> distribution: Frechet, Pareto, Cauchy, Log-gamma, Student-t</p></li>
+</ol>
+<ul>
+<li><strong>The MDAs are closed under tail-equivalence</strong>, i.e, if two distributions <span class="math inline">\(F_{1},F_{2}\)</span> with same right end-point <span class="math inline">\(y_{F}\)</span> satisfy <span class="math inline">\(\lim_{y\rightarrow y_{F}}\frac{1-F_{1}(y)}{1-F_{2}(y)}=c\)</span>, then <span class="math inline">\(F_{1}\in\text{MDA}(G)\)</span> if and only if <span class="math inline">\(F_{2}\in\text{MDA}(G)\)</span>.</li>
+</ul>
+</div>
+<div id="von-mises-conditions" class="section level2">
+<h2>Von Mises conditions</h2>
+<p><strong>Q</strong>. How can we determine the sequences <span class="math inline">\(a_{n}\)</span> and <span class="math inline">\(b_{n}\)</span>?</p>
+<p><strong>Q</strong>. How can we guess the limiting distribution of maxima of a particular random variable?</p>
+<ul>
+<li>For a sufficiently smooth distribution <span class="math inline">\(F\)</span> with upper terminal <span class="math inline">\(y_{F}\)</span>, we define the <strong>reciprocal hazard function</strong> as <span class="math display">\[r(y) = \frac{1-F(y)}{f(y)},\]</span> where <span class="math inline">\(f(y)\)</span> is the density of <span class="math inline">\(Y\)</span>. Then, with <span class="math display">\[b_{n}=F^{-1}(1-\frac{1}{n}), a_{n} = r(b_{n}), \xi = \lim_{y\rightarrow y_{F}}r&#39;(y),\]</span> the limit distribution of <span class="math inline">\(\frac{M_{n}-b_{n}}{a_{n}}\)</span> is GEV with shape parameter <span class="math inline">\(\xi\)</span>.</li>
+</ul>
+</div>
+<div id="return-levels-and-return-periods" class="section level2">
+<h2>Return levels and return periods</h2>
+<ul>
+<li><p>Since parameters <span class="math inline">\(\mu, \sigma, \xi\)</span> are often difficult to interpret, engineers and practitioners often consider <strong>return levels</strong>.</p></li>
+<li><p>The value that is exceeded on average once every <span class="math inline">\(N\)</span> years is called the <strong>N year-return level</strong>. The corresponding <strong>return period</strong> is <span class="math inline">\(N\)</span> years.</p></li>
+<li><p>If <span class="math inline">\(G\)</span> is the GEV<span class="math inline">\((\mu, \sigma, \xi)\)</span> distribution used to model annual maxima of a quantity of interest <span class="math inline">\(Y\)</span>, the <span class="math inline">\(N\)</span> year-return level <span class="math inline">\(y_{N}\)</span> satisfies the equation <span class="math display">\[
+y_{N} + G^{-1} \Big( 1- \frac{1}{N} \Big) = 
+\begin{cases}
+\mu + \frac{\sigma}{\xi} \Big[ \{ -\log (1-\frac{1}{N}\}^{-\xi} - 1  \Big], &amp; \xi \neq 0,\\
+\mu - \sigma\log \{ -\log (1-\frac{1}{N}) \}, &amp; \xi = 0.
+\end{cases}
+\]</span></p></li>
+<li><p>This formula allows <strong>extrapolation</strong> beyond the range of the data, though this requires knowledge of the true parameter values.</p></li>
+</ul>
+</div>
+<div id="likelihood-based-inference" class="section level2">
+<h2>Likelihood-based inference</h2>
+<ul>
+<li><p>One possibility to estimate unknown parameters <span class="math inline">\(\boldsymbol{\psi} = (\mu,\sigma,\xi)^T\)</span> from the data is to <strong>maximize the (log)-likelihood function</strong>.</p></li>
+<li><p>Suppose <span class="math inline">\(Y_{1},\ldots, Y_{n} \stackrel{\text{iid}}{\sim} F\)</span> and we form <span class="math inline">\(M\)</span> blocks of size <span class="math inline">\(L\)</span>. Let <span class="math inline">\(\boldsymbol{\mathcal{Z}}= (z_{1}, \ldots, z_{M})^T\)</span> denotes the vector of observed block maxima. The log-likelihood function is <span class="math display">\[l(\boldsymbol{\psi} | \boldsymbol{\mathcal{Z}}) = \sum_{i=1}^{M} \Big[ -\log \sigma - (1+ \frac{1}{\xi})\log \{ 1 + \xi ( \frac{z_{i}-\mu}{\sigma}) \}_{+} - \{ 1+ \xi(\frac{z_{i}-\mu}{\sigma})  \}_{+}   \Big].\]</span></p></li>
+<li><p>Numerical maximization of log-likelihood.</p></li>
+<li><p>Under regularity conditions (not satisfied when <span class="math inline">\(\xi\leq -0.5\)</span>, see Smith, 1985), the <strong>maximum likelihood estimator</strong> <span class="math inline">\(\hat{\boldsymbol{\psi}}\)</span> satisfies <span class="math display">\[\hat{\boldsymbol{\psi}} \stackrel{\cdot}{\sim}\mathcal{N}_{3}(\boldsymbol{\psi}, \mathbf{J}(\hat{\boldsymbol{\psi}})^{-1}), \qquad{n\rightarrow \infty,}\]</span> where <span class="math inline">\(\mathbf{J}(\boldsymbol{\psi})=-\frac{\partial^2 l(\boldsymbol{\psi}|\boldsymbol{\mathcal{Z}})}{\partial \boldsymbol{\psi}\partial\boldsymbol{\psi}^T }\)</span> os the <span class="math inline">\(3\times 3\)</span> observed information matrix.</p></li>
+</ul>
+</div>
+<div id="uncertainty-assessment" class="section level2">
+<h2>Uncertainty assessment</h2>
+<ul>
+<li><span class="math inline">\(100\times (1-2\alpha)\)</span>%-confidence interval based on <strong>asymptotic normality</strong> <span class="math display">\[\begin{align*}
+CI_\alpha (\mu) &amp;= \hat{\mu} +\pm z_\alpha \sqrt{(\mathbf{J}(\hat{\boldsymbol{\psi}})^{-1} )_{1;1}},\\
+CI_\alpha (\sigma) &amp;= \hat{\sigma} +\pm z_\alpha \sqrt{(\mathbf{J}(\hat{\boldsymbol{\psi}})^{-1} )_{2;2}},\\
+CI_\alpha (\xi) &amp;= \hat{\xi} +\pm z_\alpha \sqrt{(\mathbf{J}(\hat{\boldsymbol{\psi}})^{-1} )_{3;3}},
+\end{align*}\]</span></li>
+</ul>
+<p>where <span class="math inline">\(z_{\alpha}\)</span> is the <span class="math inline">\(\alpha\)</span>-quantile of the <span class="math inline">\(\mathcal{N}(0,1)\)</span> distribution.</p>
+<ul>
+<li><p>Confidence intervals based on *profile likelihoods<strong> are preferable, because they can be </strong>asymmetric**.</p></li>
+<li><p><strong>Uncertainty for return levels</strong> may be assessed using:</p></li>
+</ul>
+<ol style="list-style-type: decimal">
+<li><p>Asymptotic normality, combined with the delta method;</p></li>
+<li><p>Profile likelihoods, if the likelhood is reparametrized in terms of return levels;</p></li>
+<li><p>Bootstrap (or other resampling methods) - typically quite expensive.</p></li>
+</ol>
+</div>
+<div id="further-comments-on-modeling-and-inference" class="section level2">
+<h2>Further comments on modeling and inference</h2>
+<ul>
+<li><p>Possibility to include <strong>covariates</strong> in the model parameters to deal with <strong>non-stationary</strong>, e.g., <span class="math display">\[\mu(t) = \mu_0 + \mu_1(t-t_{0}) + \sum_{j=1}^{J}c_{j} \cos \{\frac{2\pi(t-t_0)}{365} \} + s_j \sin \{\frac{2\pi(t-t_0)}{365} \},\]</span> where <span class="math inline">\(t\)</span> denotes time and <span class="math inline">\(t_{0}\)</span> is a date of reference.</p></li>
+<li><p><strong>Model selection</strong> may be performed by minimizing the AIC or BIC criteria, <span class="math display">\[\text{AIC} = -2l(\hat{\boldsymbol{\psi}}|\boldsymbol{\mathcal{Z}}) + 2p, \qquad{\text{BIC} = -2l(\hat{\boldsymbol{\psi}}|\boldsymbol{\mathcal{Z}}) + \log(M)p}\]</span> where <span class="math inline">\(p\)</span> denotes the total number of parameters in the model.</p></li>
+<li><p><strong>Graphical model checks</strong>: QQ-plots, probability plots, return level plots.</p></li>
+<li><p><strong>Other inference approaches</strong>:</p></li>
+</ul>
+<ol style="list-style-type: decimal">
+<li><p>Bayesian inference, using Markov Chain Monte Carlo algorithms.</p></li>
+<li><p>Probability weighted moments (works quite well for small <span class="math inline">\(M\)</span>).</p></li>
+</ol>
+</div>
+<div id="example-with-r" class="section level2">
+<h2>Example with R</h2>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

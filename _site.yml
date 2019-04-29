@@ -5,6 +5,8 @@ navbar:
   left:
     - text: "Introduction"
       href: Lec00_Introduction.html
+    - text: "Univariate EVT"
+      href: Lec01_UEVT.html
   right:
     - icon: fa-github fa-lg
       href: http://github.com/SeoncheolPark

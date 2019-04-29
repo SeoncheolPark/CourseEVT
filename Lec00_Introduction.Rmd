@@ -2,9 +2,7 @@
 title: "Introduction"
 author: "박선철 (SNU)"
 date: "November 8, 2015"
-header-includes:
-  - \usepackage{bm}
-  - \usepackage{kotex}
+header-includes: \usepackage{amsthm, amsmath, kotex, bm, indentfirst, lmodern, graphicx, hyperref, multicol, footmisc, babel, comment, makeidx}
 output: html_document
 ---
 
@@ -28,7 +26,7 @@ output: html_document
 
 ## Examples: Daily rainfal accumulations
 
-```{r, echo=F, fig.cap='A time series of daily rainfall accumulations at a location in south-west England recorded over 1914-1962.', message=F, warning=F, cache=F, out.width = "275px", dev.args=list(pointsize=20)}
+```{r, echo=F, fig.cap='A time series of daily rainfall accumulations at a location in south-west England recorded over 1914-1962.', message=F, warning=F, cache=F, out.width = "80%", dev.args=list(pointsize=20)}
 library(ismev)
 
 par(mfrow=c(1,1))
@@ -40,7 +38,7 @@ plot(seq(ISOdate(1914,1,1), ISOdate(1961,12,30), "days"), rain, xlab="Year", yla
 
 ## Examples: Wooster data
 
-```{r, echo=F, fig.cap='Negated Wooster 5-year daily minimum temperatures.', message=F, warning=F, cache=F, out.width = "275px", dev.args=list(pointsize=20)}
+```{r, echo=F, fig.cap='Negated Wooster 5-year daily minimum temperatures.', message=F, warning=F, cache=F, out.width = "80%", dev.args=list(pointsize=20)}
 
 par(mfrow=c(1,1))
 data("wooster")

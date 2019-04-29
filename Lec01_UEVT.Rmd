@@ -1,0 +1,265 @@
+---
+title: "Univariate Extreme-Value Theory"
+author: "박선철 (SNU)"
+date: "November 8, 2015"
+header-includes:
+  - \usepackage{bm}
+  - \usepackage{kotex}
+  - \usepackage[utf8]{inputenc}
+  - \usepackage[T1]{fontenc}
+output:
+  beamer_presentation:
+    toc: false
+theme: Boadilla
+colortheme: whale
+---
+
+## Contents
+
+- Asymptotic distribution for maxima
+
+- The max-stable paradigm
+
+- Max-domains of attraction
+
+- Return levels and return periods
+
+- Point process characterization
+
+- Asymptotic distribution for threshold exceedances
+
+- Likelihood-based inference
+
+## Central Limit Theorem (CLT)
+
+- Let $Y_{1}, Y_{2}, \ldots, \stackrel{\text{iid}}{\sim}\mathcal{N}(\mu, \sigma^{2})$ and consider the **partial sum** $S_{n}$
+$$S_{n} = \sum_{i=1}^{n}Y_{i}.$$
+
+- It can be verified that
+
+1. $E(S_{n}) =n\mu \rightarrow \pm \infty$, as $n\rightarrow \infty$, if $\mu \neq 0$.
+
+2. $E(S_{n}-n\mu) = 0$, but $\text{var}(S_{n}-n\mu)=n\sigma^{2}\rightarrow\infty$, as $n\rightarrow \infty$.
+
+3. $\frac{S_{n}-n\mu}{\sqrt{n}\sigma}\stackrel{D}{=}\mathcal{N}(0,1)$.
+
+- **CLT**: For any $Y, Y_{1}, Y_{2}, \ldots, \stackrel{\text{iid}}{\sim} F$ such that $\text{var}(Y)<\infty$, one can find sequences $a_{n}>0$ and $b_{n}$ such that, as $n\rightarrow\infty$,
+$$\frac{S_{n}-b_{n}}{a_{n}}\stackrel{D}{\rightarrow}\mathcal{N}(0,1).$$
+Theser sequences are $a_{n}=\sqrt{n\text{var}(Y)}$ and $b_{n}=nE(Y)$.
+
+## Extremal Types Theorem (Fisher and Tippett, 1928)
+
+- Let $Y_{1}, Y_{2},\ldots, \stackrel{\text{iid}}{\sim} F$ with right endpoint $y_{F} =\sup \{y: F(y)<1\}$, and consider the **partial maximum** $M_{n}$
+$$M_{n} = \max (Y_{1},\ldots, Y_{n}).$$
+
+**Q**. Can we find sequences $a_{n}>0$ and $b_{n}$ such that the renormalized maximum $\frac{M_{n}-b_{n}}{a_{n}}$ has a **non-degenerate** limiting distribution? If so, what is the limit?
+
+1. Exponential case: $F(y) = 1 - \exp(-y/\lambda), y>0, \lambda >0$.
+
+2. Fr\'{e}chet case: $F(y) = \exp(-y^{-\alpha}), y>0, \alpha > 0$.
+
+3. Uniform case: $F(y) = y, 0<y<1$.
+
+- Similarly to the CLT, the **Extremal Types Theorem (ETT)** gives a partial answer to the above questions.
+
+---
+
+Let $Y_{1}, Y_{2},\ldots, \stackrel{\text{iid}}{\sim} F$ with right endpoint $y_{F} =\sup \{y: F(y)<1\}$, and consider the **partial maximum**
+$$M_{n}= \max (Y_{1}, \ldots, Y_{n}).$$
+
+If there exist sequences of constants $a_{n}>0$ and $b_{n}$ such that as $n\rightarrow\infty$,
+$$\frac{M_{n}-b_{n}}{a_{n}}\stackrel{D}{\rightarrow} Z \sim G,$$
+where $G$ is non-degenerate, then G must be a generalized extreme value (GEV) distribution, i.e.,
+$$
+G(y) =
+\begin{cases}
+\exp\Big\{ - (1+ \xi \frac{y-\mu}{\sigma})_{+}^{-1/\xi}  \Big\}, & \xi \neq 0,\\
+\exp\Big\{ - \exp (-\frac{y-\mu}{\sigma}) \Big\}, & \xi =0,
+\end{cases}
+$$
+where $a_{+} = \max(0,a)$ and $\mu \in \mathbb{R}$, $\sigma > 0$ and $\xi \in \mathbb{R}$ are location, scale and shape parameters, respectively.
+
+## R plots
+
+```{r, echo=F, fig.cap='Distribution of $M_{n}$ (left), that is $F^{n}(y)$, and distribution of $M^{*}(n)$ (right), that is $F^{n}(a_{n}y+b_{n})$, for suitable normalizing constants $a_{n}>0$ and $b_{n}$.', fig.align='center', message=F, warning=F, cache=F, out.width = "80%", dev.args=list(pointsize=20)}
+n <- c(1, 3, 9, 27, 81)
+y <- seq(-2,6,0.1)
+
+par(mfrow=c(1,2))
+#par(mar=c(5.1,0.1,4.1,0.1)/4)
+#plot without Normalizing
+plot(y, pnorm(y), xlab="y", ylab=expression(F^{n}~ (y)), type="l", main="(a) W/O Normalization", cex.main=0.8, cex=0.8, cex.lab=0.8)
+lines(y, pnorm(y)^3, col="red")
+lines(y, pnorm(y)^9, col="green")
+lines(y, pnorm(y)^27, col="blue")
+lines(y, pnorm(y)^81, col="cyan")
+#plot with Normalizing
+a <- 1/sqrt(2*log(n)) #consts for standard normal
+b <- sqrt(2*log(n)) - (1/sqrt(2*log(n)))*((log(4*pi) + log(log(n)))/2)
+plot(y, pnorm(y), xlab="y", ylab=expression(F^n ~ (a[n]~y+b[n])), type="l", main="(a) With Normalization", cex.main=0.8, cex=0.8, cex.lab=0.8)
+lines(y, pnorm(a[2]*y+b[2])^3, col="red")
+lines(y, pnorm(a[3]*y+b[3])^9, col="green")
+lines(y, pnorm(a[4]*y+b[4])^27, col="blue")
+lines(y, pnorm(a[5]*y+b[5])^81, col="cyan")
+
+```
+
+## Idea of the proof and max-stability
+
+- The proof consists of two steps:
+
+1. Show that the limiting distribution $G$ is max-stable, i.e., for any $k$, one can find constants $\alpha_{k}>0$ and $\beta_{k}$ such that
+$$G^{k}(\alpha_{k}y + \beta_{k}) = G(y).$$
+This follows from the fact that the maximum over $ML$ variable is equal to the maximum over $M$ block maxima, with blocks of length $L$.
+
+2. Show that the GEV distribution is the *only* max-stable distribution.
+
+- **Max-stability paradigm**: use a max-stable distribution (the *limit*) to model block maxima for finite $n$, and to extrapolate beyond the temporal scale of the data.
+
+## Comments about the ETT
+
+- The theorem is valid for a wide range of distributions, even though the limiting $\text{GEV}(\mu,\sigma,\xi)$ distribution has only 3 parameters.
+
+- This result can be extended to stationary processes with **short-range dependence** (Leadbetter, 1983) under the so-called $D(u_{n})$ condition:
+
+### Leadbetter's condition
+
+Let $A,B\subset\{ 1, \ldots, n\}$ denote subsets of indicies separated by at least $l$, i.e, $\min B - \max A \geq l$. The $D(u_{n})$ condition is satisfied if
+$$\sup_{A,B}|P(\mathbf{Y}_{A}\leq u_{n}, \mathbf{Y}_{B}\leq u_{n}) - P(\mathbf{Y}_{A}\leq u_{n})P(\mathbf{Y}_{B}\leq u_{n})|\leq \alpha(n,l),$$
+where $\alpha(n,l_{n})\rightarrow 0$ for some sequence $l_{n} = o(n), l_{n} \rightarrow \infty$, as $n\rightarrow \infty$.
+
+- This suggests that block maxima of a large class of processes may be modeled using the GEV distribution.
+
+## The GEV distribution
+
+- GEV$(\mu, \sigma, \xi)$ distribution:
+$$
+G(y)=
+\begin{cases}
+\exp\Big\{- (1+ \xi \frac{y-\mu}{\sigma})_{+}^{-1/\xi} \Big\}, & \xi \neq 0,\\
+\exp\Big\{- \exp(-\frac{y-\mu}{\sigma}) \Big\}, & \xi = 0,\\
+\end{cases}
+$$
+with $\mu \in \mathbb{R}, \sigma > 0 , \xi \in \mathbb{R}$, defined on $\{ y : 1+\xi (y-\mu)/\sigma >0 \}$.
+
+- The crucial parameter is $\xi$, which determines the heaviness of the tail:
+
+1. $\xi < 0$ (Short-tailed): **Reversed Weibull** case, bounded tail;
+
+2. $\xi = 0$ (Light-tailed): **Gumbel** case, exponentially decaying tail;
+
+3. $\xi > 0$ (heavy-tailed): **Frechet** case, tail with power law decay.
+
+- Moments of $Y\sim \text{GEV}(\mu, \sigma, \xi)$:
+$$E(Y^{r}) < \infty \Longleftrightarrow \xi r < 1.$$
+
+## GEV distribution: plot
+
+```{r, echo=F, fig.cap='Standard Gumbel (black), unit Frechet (red) and unit Weibull (blue) density functions.', fig.align='center', message=F, warning=F, cache=F, out.width = "80%", dev.args=list(pointsize=20)}
+library(evd)
+xval_density <- seq(-5,5,0.05)
+yval_standardGumbel <- dgev(xval_density, loc=0, scale=1, shape=0)
+yval_unitFrechet <- dgev(xval_density, loc=1, scale=1, shape=1)
+yval_unitWeibull <- dgev(xval_density, loc=-1, scale=1, shape=-1)
+plot(xval_density, yval_standardGumbel, type="n", xlab="y", ylab="G(y)", xlim=c(-5,5), ylim=c(0,1))
+lines(xval_density, yval_standardGumbel, col="black")
+lines(xval_density, yval_unitFrechet, col="red")
+lines(xval_density, yval_unitWeibull, col="blue")
+
+```
+
+
+## Max-domains of attraction (MDA)
+
+- A distribution $F$ is said to be in the **max-domain of attraction** of $G$ denoted by $F\in\text{MDA}(G)$, if there exist sequences $a_{n}> 0$ and $b_{n}$ such that for any $y$, $F^{n}(a_{n}y+b_{n})\rightarrow G(y)$, as $n\rightarrow\infty$.
+
+1. MDA of the **reversed Weibull** distribution: Beta, Uniform
+
+2. MDA of the **Gumbel** distribution: Normal, Gamma, Log-normal, Weibull, Exponential
+
+3. MDA of the **Frechet** distribution: Frechet, Pareto, Cauchy, Log-gamma, Student-t
+
+- **The MDAs are closed under tail-equivalence**, i.e, if two distributions $F_{1},F_{2}$ with same right end-point $y_{F}$ satisfy $\lim_{y\rightarrow y_{F}}\frac{1-F_{1}(y)}{1-F_{2}(y)}=c$, then $F_{1}\in\text{MDA}(G)$ if and only if $F_{2}\in\text{MDA}(G)$.
+
+## Von Mises conditions
+
+**Q**. How can we determine the sequences $a_{n}$ and $b_{n}$?
+
+**Q**. How can we guess the limiting distribution of maxima of a particular random variable?
+
+- For a sufficiently smooth distribution $F$ with upper terminal $y_{F}$, we define the **reciprocal hazard function** as
+$$r(y) = \frac{1-F(y)}{f(y)},$$
+where $f(y)$ is the density of $Y$. Then, with
+$$b_{n}=F^{-1}(1-\frac{1}{n}), a_{n} = r(b_{n}), \xi = \lim_{y\rightarrow y_{F}}r'(y),$$
+the limit distribution of $\frac{M_{n}-b_{n}}{a_{n}}$ is GEV with shape parameter $\xi$.
+
+## Return levels and return periods
+
+- Since parameters $\mu, \sigma, \xi$ are often difficult to interpret, engineers and practitioners often consider **return levels**.
+
+- The value that is exceeded on average once every $N$ years is called the **N year-return level**. The corresponding **return period** is $N$ years.
+
+- If $G$ is the GEV$(\mu, \sigma, \xi)$ distribution used to model annual maxima of a quantity of interest $Y$, the $N$ year-return level $y_{N}$ satisfies the equation
+$$
+y_{N} + G^{-1} \Big( 1- \frac{1}{N} \Big) = 
+\begin{cases}
+\mu + \frac{\sigma}{\xi} \Big[ \{ -\log (1-\frac{1}{N}\}^{-\xi} - 1  \Big], & \xi \neq 0,\\
+\mu - \sigma\log \{ -\log (1-\frac{1}{N}) \}, & \xi = 0.
+\end{cases}
+$$
+
+- This formula allows **extrapolation** beyond the range of the data, though this requires knowledge of the true parameter values.
+
+## Likelihood-based inference
+
+- One possibility to estimate unknown parameters $\boldsymbol{\psi} = (\mu,\sigma,\xi)^T$ from the data is to **maximize the (log)-likelihood function**.
+
+- Suppose $Y_{1},\ldots, Y_{n} \stackrel{\text{iid}}{\sim} F$ and we form $M$ blocks of size $L$. Let $\boldsymbol{\mathcal{Z}}= (z_{1}, \ldots, z_{M})^T$ denotes the vector of observed block maxima. The log-likelihood function is
+$$l(\boldsymbol{\psi} | \boldsymbol{\mathcal{Z}}) = \sum_{i=1}^{M} \Big[ -\log \sigma - (1+ \frac{1}{\xi})\log \{ 1 + \xi ( \frac{z_{i}-\mu}{\sigma}) \}_{+} - \{ 1+ \xi(\frac{z_{i}-\mu}{\sigma})  \}_{+}   \Big].$$
+
+- Numerical maximization of log-likelihood.
+
+- Under regularity conditions (not satisfied when $\xi\leq -0.5$, see Smith, 1985), the **maximum likelihood estimator** $\hat{\boldsymbol{\psi}}$ satisfies
+$$\hat{\boldsymbol{\psi}} \stackrel{\cdot}{\sim}\mathcal{N}_{3}(\boldsymbol{\psi}, \mathbf{J}(\hat{\boldsymbol{\psi}})^{-1}), \qquad{n\rightarrow \infty,}$$
+where $\mathbf{J}(\boldsymbol{\psi})=-\frac{\partial^2 l(\boldsymbol{\psi}|\boldsymbol{\mathcal{Z}})}{\partial \boldsymbol{\psi}\partial\boldsymbol{\psi}^T }$ os the $3\times 3$ observed information matrix.
+
+## Uncertainty assessment
+
+- $100\times (1-2\alpha)$%-confidence interval based on **asymptotic normality**
+\begin{align*}
+CI_\alpha (\mu) &= \hat{\mu} +\pm z_\alpha \sqrt{(\mathbf{J}(\hat{\boldsymbol{\psi}})^{-1} )_{1;1}},\\
+CI_\alpha (\sigma) &= \hat{\sigma} +\pm z_\alpha \sqrt{(\mathbf{J}(\hat{\boldsymbol{\psi}})^{-1} )_{2;2}},\\
+CI_\alpha (\xi) &= \hat{\xi} +\pm z_\alpha \sqrt{(\mathbf{J}(\hat{\boldsymbol{\psi}})^{-1} )_{3;3}},
+\end{align*}
+
+where $z_{\alpha}$ is the $\alpha$-quantile of the $\mathcal{N}(0,1)$ distribution.
+
+- Confidence intervals based on *profile likelihoods** are preferable, because they can be **asymmetric**.
+
+- **Uncertainty for return levels** may be assessed using:
+
+1. Asymptotic normality, combined with the delta method;
+
+2. Profile likelihoods, if the likelhood is reparametrized in terms of return levels;
+
+3. Bootstrap (or other resampling methods) - typically quite expensive.
+
+## Further comments on modeling and inference
+
+- Possibility to include **covariates** in the model parameters to deal with **non-stationary**, e.g.,
+$$\mu(t) = \mu_0 + \mu_1(t-t_{0}) + \sum_{j=1}^{J}c_{j} \cos \{\frac{2\pi(t-t_0)}{365} \} + s_j \sin \{\frac{2\pi(t-t_0)}{365} \},$$
+where $t$ denotes time and $t_{0}$ is a date of reference.
+
+- **Model selection** may be performed by minimizing the AIC or BIC criteria,
+$$\text{AIC} = -2l(\hat{\boldsymbol{\psi}}|\boldsymbol{\mathcal{Z}}) + 2p, \qquad{\text{BIC} = -2l(\hat{\boldsymbol{\psi}}|\boldsymbol{\mathcal{Z}}) + \log(M)p}$$
+where $p$ denotes the total number of parameters in the model.
+
+- **Graphical model checks**: QQ-plots, probability plots, return level plots.
+
+- **Other inference approaches**:
+
+1. Bayesian inference, using Markov Chain Monte Carlo algorithms.
+
+2. Probability weighted moments (works quite well for small $M$).
+
+## Example with R
